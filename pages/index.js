@@ -1,9 +1,8 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -13,13 +12,14 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <h1 className="text-3xl font-bold underline">Hello world!</h1>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className={styles.description}>
           Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
+          <code className={styles.code}>pages/index.js</code>
         </p>
 
         <div className={styles.grid}>
@@ -68,5 +68,3 @@ const Home: NextPage = () => {
     </div>
   )
 }
-
-export default Home
