@@ -7,5 +7,11 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "prettier"
-  ]
+  ],
+  "rules": {
+    // https://ja.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html
+    // https://zenn.dev/ryuu/scraps/583dad79532879
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
+  }
 }
