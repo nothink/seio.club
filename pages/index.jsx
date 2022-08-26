@@ -12,6 +12,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <button className="btn btn-primary" type="submit">
+          Button
+        </button>
         <h1 className="text-3xl font-bold underline">Hello world!</h1>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
