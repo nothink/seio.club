@@ -9,6 +9,7 @@
     "start": "next start",
     "test": "echo 'not have a test yet.'",
     "lint": "next lint",
+    "lint-staged": "lint-staged",
     "format": "prettier . --write",
     "prepare": "husky install"
   },
