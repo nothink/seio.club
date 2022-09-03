@@ -1,8 +1,5 @@
 {
   "extends": [
-    "airbnb",
-    "airbnb/hooks",
-    "airbnb-typescript",
     "eslint:recommended",
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -13,6 +10,9 @@
     "prettier"
   ],
   "plugins": ["tailwindcss"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
     // https://ja.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html
     // https://zenn.dev/ryuu/scraps/583dad79532879
