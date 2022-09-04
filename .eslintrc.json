@@ -1,8 +1,10 @@
 {
   "extends": [
     "eslint:recommended",
+    "next",
     "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
@@ -14,6 +16,8 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    // https://docs.amplify.aws/guides/hosting/nextjs/q/platform/js/#getting-started
+    "@next/next/no-img-element": "off",
     // https://ja.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html
     // https://zenn.dev/ryuu/scraps/583dad79532879
     "react/jsx-uses-react": "off",
