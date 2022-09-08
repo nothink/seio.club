@@ -26,7 +26,7 @@
     "@aws-amplify/ui-react": "^3.5.0",
     "aws-amplify": "^4.3.34",
     "daisyui": "2.24.0",
-    "next": "12.2.5",
+    "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -38,7 +38,7 @@
     "@typescript-eslint/parser": "5.36.1",
     "autoprefixer": "10.4.8",
     "eslint": "8.23.0",
-    "eslint-config-next": "12.2.5",
+    "eslint-config-next": "12.3.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsx-a11y": "6.6.1",
