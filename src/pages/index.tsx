@@ -29,7 +29,7 @@ const Home: NextPage = () => (
           </button>
         </div>
         <div className="flex-1">
-          <a className="btn-ghost btn text-xl normal-case">daisyUI</a>
+          <a className="btn-ghost btn text-xl normal-case">seio.club</a>
         </div>
         <div className="flex-none">
           <button className="btn-ghost btn-square btn">
@@ -53,13 +53,9 @@ const Home: NextPage = () => (
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">
-            <h1 className="text-5xl font-bold">Hello there</h1>
-            <p className="py-6">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
-            </p>
-            <button className="btn-primary btn">Get Started</button>
+            <h1 className="text-5xl font-bold">Hello seio.club</h1>
+            <p className="py-6">ようこそ seio.club へ</p>
+            <button className="btn-primary btn">開始前</button>
           </div>
         </div>
       </div>
