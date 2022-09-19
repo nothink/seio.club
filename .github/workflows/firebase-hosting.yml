@@ -1,11 +1,11 @@
 name: Deploy to Firebase Hosting
-
+# on
 on: pull_request
-
+# env
 env:
   PROJECT_ID: "seioclub"
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
+# jobs
 jobs:
   deploy:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
@@ -20,6 +20,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       # -------- firebase hosting --------
-      - run: npm install -g firebase-tools
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+      - name: Enable framework-awareness
+        run: firebase --open-sesame frameworkawareness
       - name: Deploy to Firebase
         run: firebase hosting:channel:deploy ${{ github.ref_name }}
