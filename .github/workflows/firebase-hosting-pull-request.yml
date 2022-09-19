@@ -16,13 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: "pnpm"
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build
+          cache: "npm"
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
       - name: Enable framework-awareness
@@ -31,4 +28,4 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}"
-          projectId: seioclub
+          projectId: "${{ env.PROJECT_ID }}"
