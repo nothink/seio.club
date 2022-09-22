@@ -30,8 +30,9 @@ jobs:
         name: Get global path of node
         run: |
           list_head=$(npm list -g | head -1)
-          echo $list_head
-          echo "::set-output name=path::$list_head"
+          global_path=${list_head%/*}
+          echo $global_path
+          echo "::set-output name=path::$global_path"
       - id: node-version
         name: Get node.js version
         run: |
@@ -48,7 +49,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.global-path.outputs.path }}
-          key: ${{ runner.os }}-${{ steps.node-version.outputs.version }}-${{ steps.firebase-version.outputs.version }}
+          key: ${{ runner.os }}-node-${{ steps.node-version.outputs.version }}-firebase-${{ steps.firebase-version.outputs.version }}
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
       - name: Enable framework-awareness
