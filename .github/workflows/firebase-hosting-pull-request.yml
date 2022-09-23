@@ -15,7 +15,8 @@ env:
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 # jobs
 jobs:
-  build_and_preview:
+  preview:
+    name: Preview hosting
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +41,7 @@ jobs:
           echo $node_version
           echo "::set-output name=version::$node_version"
       - id: firebase-version
-        name: Get firebase-tools version
+        name: Get firebase-tools latest version
         run: |
           fb_version=$(npm show firebase-tools version)
           echo $fb_version
@@ -51,8 +52,7 @@ jobs:
           path: ${{ steps.global-path.outputs.path }}
           key: ${{ runner.os }}-node-${{ steps.node-version.outputs.version }}-firebase-${{ steps.firebase-version.outputs.version }}
       - name: Install Firebase CLI
-        run: npm install -g firebase-tools -vvv
-      - run: npm list -g
+        run: npm install -g firebase-tools
       - name: Enable framework-awareness
         run: firebase --open-sesame frameworkawareness
       - uses: FirebaseExtended/action-hosting-deploy@v0
