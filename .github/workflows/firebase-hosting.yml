@@ -34,44 +34,9 @@ jobs:
           node-version: "18"
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      # -- for caching firebase-tools --
-      - id: global-path
-        name: Get global path of node
-        run: |
-          list_head=$(npm list -g | head -1)
-          global_path=${list_head%/*}
-          echo $global_path
-          echo "::set-output name=path::$global_path"
-      - id: npx-cache-path
-        name: Get npx cache path of node
-        run: |
-          cache_path=$(npm get cache)/_npx
-          echo $cache_path
-          echo "::set-output name=path::$cache_path"
-      - id: node-version
-        name: Get node.js version
-        run: |
-          node_version=$(node --version)
-          echo $node_version
-          echo "::set-output name=version::$node_version"
-      - id: firebase-version
-        name: Get firebase-tools latest version
-        run: |
-          fb_version=$(npm show firebase-tools version)
-          echo $fb_version
-          echo "::set-output name=version::$fb_version"
-      - name: Cache Firebase CLI
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ steps.global-path.outputs.path }}
-            ${{ steps.npx-cache-path.outputs.path }}
-          key: ${{ runner.os }}-node-${{ steps.node-version.outputs.version }}-firebase-${{ steps.firebase-version.outputs.version }}
       # for using firebase-framework-tools
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
       - name: Enable framework-awareness
-        run: firebase --open-sesame frameworkawareness
+        run: pnpm exec firebase --open-sesame frameworkawareness
       # Deploy live channel to:
       #   1. push to main
       - name:  Deploy live channel
