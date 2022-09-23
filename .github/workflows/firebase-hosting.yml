@@ -74,7 +74,8 @@ jobs:
         run: firebase --open-sesame frameworkawareness
       # Deploy live channel to:
       #   1. push to main
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name:  Deploy live channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
         if: "${{ github.event_name == 'push' }}"
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
@@ -83,7 +84,8 @@ jobs:
           projectId: "${{ env.PROJECT_ID }}"
       # Deploy preview channel to:
       #   2. pull request from original repos
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Deploy preview channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
         if: "${{ github.event_name == 'pull_request' }}"
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
