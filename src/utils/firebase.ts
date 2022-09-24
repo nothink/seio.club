@@ -7,6 +7,7 @@ import { getAuth, Auth } from "firebase/auth"; /* eslint import/named: 0 */
 import {
   getAnalytics,
   Analytics,
+  isSupported,
 } from "firebase/analytics"; /* eslint import/named: 0 */
 import {
   getFirestore,
@@ -30,6 +31,11 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app: FirebaseApp = initializeApp(firebaseConfig);
 
-export const analytics: Analytics = getAnalytics(app);
+// analystics fallback
+// sa: https://stackoverflow.com/a/72167004
+export const analytics: Promise<Analytics> = isSupported().then((yes) =>
+  yes ? getAnalytics(app) : null
+);
+
 export const auth: Auth = getAuth(app);
 export const firestore: Firestore = getFirestore(app);
