@@ -11,11 +11,10 @@ module.exports = {
   plugins: [require("daisyui")],
   // daisyUI config (optional)
   daisyui: {
-    themes: ["cupcake"],
     styled: true,
     themes: true,
     utils: true,
-    logs: true,
+    logs: false,
     rtl: false,
   },
 };
