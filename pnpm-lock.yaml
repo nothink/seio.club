@@ -17,7 +17,7 @@ specifiers:
   eslint-plugin-react-hooks: 4.6.0
   eslint-plugin-tailwindcss: 3.6.2
   firebase: 9.10.0
-  firebase-tools: 11.10.0
+  firebase-tools: 11.11.0
   husky: 8.0.1
   lint-staged: 13.0.3
   next: 12.3.1
@@ -51,7 +51,7 @@ devDependencies:
   eslint-plugin-react: 7.31.8_eslint@8.24.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.24.0
   eslint-plugin-tailwindcss: 3.6.2
-  firebase-tools: 11.10.0
+  firebase-tools: 11.11.0
   husky: 8.0.1
   lint-staged: 13.0.3
   postcss: 8.4.16
@@ -3188,8 +3188,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /firebase-tools/11.10.0:
-    resolution: {integrity: sha512-hel1UwDKsm0RlJyCBsMulE0EYzxKHusHJpezF7jpuIcP0Q5O41XXGDcW9uQB2gZopWJ1cf77ZOmYNLhrgfzauA==}
+  /firebase-tools/11.11.0:
+    resolution: {integrity: sha512-EHozChMi1qWFrByztWi7oWsBMQEHSdrg+Nut5oX/axsDUM4kQRjbBG++0RtCAQx7mR4CaFoKUAwE0/VmcJoWxw==}
     engines: {node: ^14.18.0 || >=16.4.0}
     hasBin: true
     dependencies:
