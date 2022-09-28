@@ -34,6 +34,9 @@ exports.dqx9mbrpz1jhx = functions
 // Listens for new messages added to /dqx9mbrpz1jhx/:documentId
 exports.fetch = functions
   .region(REGION)
+  .runWith({
+    timeoutSeconds: 480,
+  })
   .firestore.document("/" + RES_COL + "/{documentId}")
   .onCreate((snap) => {
     // Grab the current value of what was written to Firestore.
@@ -44,7 +47,7 @@ exports.fetch = functions
     for (const elem of urls) {
       // Iterate files in urls.
       const url = new URL(elem);
-      const filename = url.pathname;
+      const filename = url.pathname.substring(1);
       const file = bucket.file(filename);
       file.exists().then(([exists]) => {
         if (!exists) {
