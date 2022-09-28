@@ -1,4 +1,5 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
+// The Cloud Functions for Firebase SDK to create Cloud Functions
+// and set up triggers.
 const axios = require("axios").default;
 const functions = require("firebase-functions");
 
