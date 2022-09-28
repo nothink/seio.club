@@ -7,8 +7,5 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 13,
   },
-  extends: ["eslint:recommended", "google"],
-  rules: {
-    quotes: ["error", "double"],
-  },
+  extends: ["eslint:recommended"],
 };
