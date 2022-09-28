@@ -27,8 +27,7 @@ exports.dqx9mbrpz1jhx = functions.https.onRequest(async (req, res) => {
   }
 });
 
-// Listens for new messages added to /messages/:documentId/original and creates an
-// uppercase version of the message to /messages/:documentId/uppercase
+// Listens for new messages added to /dqx9mbrpz1jhx/:documentId
 exports.fetch = functions.firestore
   .document("/" + RES_COL + "/{documentId}")
   .onCreate((snap, context) => {
@@ -38,23 +37,25 @@ exports.fetch = functions.firestore
     const bucket = getStorage().bucket(RES_COL);
 
     for (const elem of urls) {
+      // Iterate files in urls.
       const url = new URL(elem);
       const filename = url.pathname;
       const file = bucket.file(filename);
-      file.exists().then((exists) => {
+      file.exists().then(([exists]) => {
         if (!exists) {
           axios.get(url.href, { responseType: "stream" }).then((res) => {
-            res.data.pipe;
+            res.data
+              .pipe(file.createWriteStream())
+              .on("error", (err) => {
+                functions.logger.log(err);
+              })
+              .on("finish", () => {
+                functions.logger.log(filename);
+              });
           });
         }
       });
-
-      functions.logger.log(filename);
     }
-
-    // You must return a Promise when performing asynchronous tasks inside a Functions such as
-    // writing to Firestore.
-    // Setting an 'uppercase' field in Firestore document returns a Promise.
 
     // Delete this document.
     return admin.firestore().collection(RES_COL).doc(snap.id).delete();
