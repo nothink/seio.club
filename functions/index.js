@@ -1,6 +1,7 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions
 // and set up triggers.
 const axios = require("axios").default;
+const cors = require("cors")({ origin: true });
 const functions = require("firebase-functions");
 
 // The Firebase Admin SDK to access Firestore.
@@ -17,6 +18,7 @@ const REGION = "asia-northeast1";
 exports.dqx9mbrpz1jhx = functions
   .region(REGION)
   .https.onRequest(async (req, res) => {
+    res.set("Access-Control-Allow-Origin", "*");
     if (req.method === "POST") {
       const urls = req.body.urls;
       // Push the new message into Firestore using the Firebase Admin SDK.
