@@ -20,7 +20,7 @@ exports.dqx9mbrpz1jhx = functions.region(REGION).https.onRequest((req, res) => {
     if (req.method === "POST") {
       const urls = req.body.urls;
       // Push the new message into Firestore using the Firebase Admin SDK.
-      const result = admin
+      admin
         .firestore()
         .collection(RES_COL)
         .add({ urls: urls })
