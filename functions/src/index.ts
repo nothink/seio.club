@@ -15,7 +15,7 @@ initializeApp();
 // Take the body json passed to this HTTP endpoint and insert it into
 // Firestore under the path /dqx9mbrpz1jhx/:documentId/urls
 export const dqx9mbrpz1jhx = https.onRequest(
-  { region: "asia-northeast1", cors: true, timeoutSeconds: 600 },
+  { cors: true, timeoutSeconds: 600 },
   (req: https.Request, res: express.Response) => {
     if (req.method === "POST") {
       const bucket = getStorage().bucket("dqx9mbrpz1jhx");
@@ -50,7 +50,7 @@ export const dqx9mbrpz1jhx = https.onRequest(
 );
 
 export const notify = storage.onObjectFinalized(
-  { bucket: "dqx9mbrpz1jhx", region: "asia-northeast1" },
+  { bucket: "dqx9mbrpz1jhx" },
   (event) => {
     logger.log(event.bucket);
   }
