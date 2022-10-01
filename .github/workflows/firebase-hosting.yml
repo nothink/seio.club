@@ -59,7 +59,7 @@ jobs:
         # if: "${{ github.event_name == 'push' }}"
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
-          pnpm exec firebase deploy --only hosting
+          pnpm exec firebase deploy --only hosting --debug
 
       # Deploy live channel to:
       #   1.1. push to main
