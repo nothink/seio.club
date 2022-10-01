@@ -1,22 +1,25 @@
 import axios, { AxiosResponse } from "axios";
 import express from "express";
+import cors from "cors";
 import { Readable } from "stream";
 
 import { initializeApp } from "firebase-admin/app";
 import { getStorage } from "firebase-admin/storage";
-import { https, logger, storage } from "firebase-functions/v2";
+import * as functions from "firebase-functions/v1";
 
 initializeApp();
+
+const corsHandler = cors({ origin: true });
+const logger = functions.logger;
 
 // ---------------------------------------------------------------------------
 // https
 // ---------------------------------------------------------------------------
-
-// Take the body json passed to this HTTP endpoint and insert it into
-// Firestore under the path /dqx9mbrpz1jhx/:documentId/urls
-export const dqx9mbrpz1jhx = https.onRequest(
-  { cors: true, timeoutSeconds: 600 },
-  (req: https.Request, res: express.Response) => {
+const dqx9mbrpz1jhxHandler = (
+  req: functions.https.Request,
+  res: express.Response
+) => {
+  corsHandler(req, res, () => {
     if (req.method === "POST") {
       const bucket = getStorage().bucket("dqx9mbrpz1jhx");
       const urls = req.body.urls as string[];
@@ -33,10 +36,10 @@ export const dqx9mbrpz1jhx = https.onRequest(
                 res.data
                   .pipe(file.createWriteStream())
                   .on("error", (err) => {
-                    logger.log(err);
+                    logger.error(err);
                   })
                   .on("finish", () => {
-                    logger.log(file.cloudStorageURI);
+                    logger.info(file.cloudStorageURI);
                   });
               });
           }
@@ -44,14 +47,27 @@ export const dqx9mbrpz1jhx = https.onRequest(
       }
       res.sendStatus(201);
     } else {
+      logger.warn(req);
       res.sendStatus(405);
     }
-  }
-);
+  });
+};
 
-export const notify = storage.onObjectFinalized(
-  { bucket: "dqx9mbrpz1jhx" },
-  (event) => {
-    logger.log(event.bucket);
-  }
-);
+// ---------------------------------------------------------------------------
+// storage
+// ---------------------------------------------------------------------------
+const notifyHandler = async (object: functions.storage.ObjectMetadata) => {
+  logger.log(object.bucket);
+};
+
+//
+// export
+//
+export const dqx9mbrpz1jhx = functions
+  .region("asia-northeast1")
+  .runWith({ memory: "128MB", timeoutSeconds: 540 })
+  .https.onRequest(dqx9mbrpz1jhxHandler);
+export const notify = functions.storage
+  .bucket("dqx9mbrpz1jhx")
+  .object()
+  .onFinalize(notifyHandler);
