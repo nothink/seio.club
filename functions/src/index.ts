@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import express from "express";
 import cors from "cors";
 import { Readable } from "stream";
@@ -12,6 +12,40 @@ initializeApp();
 const corsHandler = cors({ origin: true });
 const logger = functions.logger;
 
+// utils
+const getDqx9mbrpz1jhx = async (url: URL) => {
+  const bucket = getStorage().bucket("dqx9mbrpz1jhx");
+  const filename = url.pathname.substring(1);
+  const file = bucket.file(filename);
+  const [exists] = await file.exists();
+  if (exists) {
+    return;
+  }
+
+  try {
+    const options: AxiosRequestConfig = {
+      method: "GET",
+      responseType: "stream",
+      timeout: 600000,
+      maxContentLength: 1073741824,
+    };
+    const res: AxiosResponse<Readable> = await axios.get(url.href, options);
+    res.data
+      .pipe(file.createWriteStream())
+      .on("error", (err) => {
+        logger.error("stream error");
+        logger.error(err.message);
+      })
+      .on("finish", () => {
+        logger.info("created:", file.cloudStorageURI.href);
+      });
+  } catch (e: any) {
+    const { status, statusText } = e.response;
+    logger.error(e.message);
+    logger.error(`Error! HTTP Status: ${status} ${statusText}`);
+  }
+};
+
 // ---------------------------------------------------------------------------
 // https
 // ---------------------------------------------------------------------------
@@ -19,31 +53,13 @@ const dqx9mbrpz1jhxHandler = (
   req: functions.https.Request,
   res: express.Response
 ) => {
-  corsHandler(req, res, () => {
+  corsHandler(req, res, async () => {
     if (req.method === "POST") {
-      const bucket = getStorage().bucket("dqx9mbrpz1jhx");
       const urls = req.body.urls as string[];
       for (const elem of urls) {
         // Iterate files in urls.
         const url = new URL(elem);
-        const filename = url.pathname.substring(1);
-        const file = bucket.file(filename);
-        file.exists().then(([exists]) => {
-          if (!exists) {
-            axios
-              .get(url.href, { responseType: "stream" })
-              .then((res: AxiosResponse<Readable>) => {
-                res.data
-                  .pipe(file.createWriteStream())
-                  .on("error", (err) => {
-                    logger.error(err);
-                  })
-                  .on("finish", () => {
-                    logger.info(file.cloudStorageURI);
-                  });
-              });
-          }
-        });
+        await getDqx9mbrpz1jhx(url);
       }
       res.sendStatus(201);
     } else {
@@ -57,7 +73,8 @@ const dqx9mbrpz1jhxHandler = (
 // storage
 // ---------------------------------------------------------------------------
 const notifyHandler = async (object: functions.storage.ObjectMetadata) => {
-  logger.log(object.bucket);
+  logger.info("link: ", object.mediaLink);
+  logger.info("name: ", object.name);
 };
 
 //
@@ -65,9 +82,11 @@ const notifyHandler = async (object: functions.storage.ObjectMetadata) => {
 //
 export const dqx9mbrpz1jhx = functions
   .region("asia-northeast1")
-  .runWith({ memory: "128MB", timeoutSeconds: 540 })
+  .runWith({ memory: "256MB", timeoutSeconds: 540 })
   .https.onRequest(dqx9mbrpz1jhxHandler);
-export const notify = functions.storage
-  .bucket("dqx9mbrpz1jhx")
+export const notify = functions
+  .region("asia-northeast1")
+  .runWith({ memory: "256MB", timeoutSeconds: 540 })
+  .storage.bucket("dqx9mbrpz1jhx")
   .object()
   .onFinalize(notifyHandler);
