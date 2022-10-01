@@ -37,6 +37,28 @@ jobs:
       # for using firebase-framework-tools
       - name: Enable framework-awareness
         run: pnpm exec firebase experiments:enable webframeworks
+      # cache Next.js builds
+      - name: Cache build caches of Next.js
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+      - name: Build Next.js
+        run: pnpm exec build
+      # --- when push to main branch ---
+
+      # Deploy all
+      - name: Deploy Cloud Functions
+        run: cd functions && npm ci && npm run build
+      - name: Deploy productions
+        run: pnpm exec firebase deploy --only hosting
+
       # Deploy live channel to:
       #   1.1. push to main
       - name:  Deploy live channel
