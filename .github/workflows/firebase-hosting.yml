@@ -35,7 +35,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       # for using firebase-framework-tools
-      - name: Enable framework-awareness
+      - name: Enable experiment webframeworks
         run: pnpm exec firebase experiments:enable webframeworks
       # cache Next.js builds
       - name: Cache build caches of Next.js
@@ -50,7 +50,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Build Next.js
-        run: pnpm exec build
+        run: pnpm run build
       # --- when push to main branch ---
 
       # Deploy all
