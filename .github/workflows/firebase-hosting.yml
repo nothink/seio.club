@@ -15,7 +15,6 @@ on:
 # env
 env:
   PROJECT_ID: "seioclub"
-  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
 # jobs
 jobs:
@@ -53,11 +52,14 @@ jobs:
         run: pnpm run build
       # --- when push to main branch ---
 
-      # Deploy all
-      - name: Deploy Cloud Functions
-        run: cd functions && npm ci && npm run build
+      # Deploy productions
+      - name: Create SA key
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}' > $HOME/gcloud.json
       - name: Deploy productions
-        run: pnpm exec firebase deploy --only hosting
+        # if: "${{ github.event_name == 'push' }}"
+        run: |
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
+          pnpm exec firebase deploy --only hosting
 
       # Deploy live channel to:
       #   1.1. push to main
@@ -69,10 +71,6 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}"
           channelId: live
           projectId: "${{ env.PROJECT_ID }}"
-      #   1.2. and install Cloud Functions
-      - name: Deploy Cloud Functions
-        if: "${{ github.event_name == 'push' }}"
-        run: cd functions && npm ci && npm run build && npm run deploy
       # Deploy preview channel to:
       #   2. pull request from original repos
       - name: Deploy preview channel
