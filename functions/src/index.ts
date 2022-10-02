@@ -47,9 +47,8 @@ const getDqx9mbrpz1jhx = async (url: URL) => {
       });
   } catch (e) {
     if (axios.isAxiosError(e) && e.response) {
-      logger.error(e.message);
       logger.error(
-        `Error! HTTP Status: ${e.response.status} ${e.response.statusText}`
+        `AxiosError (${e.message}) HTTP Status: ${e.response.status} ${e.response.statusText} / url: ${url.href}`
       );
     } else {
       logger.error("Unknown error: ", e);
