@@ -15,7 +15,13 @@ const logger = functions.logger;
 // utils
 const getDqx9mbrpz1jhx = async (url: URL) => {
   const bucket = getStorage().bucket("dqx9mbrpz1jhx");
-  const filename = url.pathname.substring(1);
+  const filename = url.pathname.startsWith("/")
+    ? url.pathname.substring(1)
+    : url.pathname;
+  if (!filename) {
+    logger.warn("A file name must be specified. : ", filename);
+    return;
+  }
   const file = bucket.file(filename);
   const [exists] = await file.exists();
   if (exists) {
@@ -39,10 +45,15 @@ const getDqx9mbrpz1jhx = async (url: URL) => {
       .on("finish", () => {
         logger.info("created:", file.cloudStorageURI.href);
       });
-  } catch (e: any) {
-    const { status, statusText } = e.response;
-    logger.error(e.message);
-    logger.error(`Error! HTTP Status: ${status} ${statusText}`);
+  } catch (e) {
+    if (axios.isAxiosError(e) && e.response) {
+      logger.error(e.message);
+      logger.error(
+        `Error! HTTP Status: ${e.response.status} ${e.response.statusText}`
+      );
+    } else {
+      logger.error("Unknown error: ", e);
+    }
   }
 };
 
