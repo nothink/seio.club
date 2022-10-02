@@ -1,57 +1,103 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import express from "express";
+import cors from "cors";
 import { Readable } from "stream";
 
 import { initializeApp } from "firebase-admin/app";
 import { getStorage } from "firebase-admin/storage";
-import { https, logger, storage } from "firebase-functions/v2";
+import * as functions from "firebase-functions/v1";
 
 initializeApp();
+
+const corsHandler = cors({ origin: true });
+const logger = functions.logger;
+
+// utils
+const getDqx9mbrpz1jhx = async (url: URL) => {
+  const bucket = getStorage().bucket("dqx9mbrpz1jhx");
+  const filename = url.pathname.startsWith("/")
+    ? url.pathname.substring(1)
+    : url.pathname;
+  if (!filename) {
+    logger.warn("A file name must be specified. : ", filename);
+    return;
+  }
+  const file = bucket.file(filename);
+  const [exists] = await file.exists();
+  if (exists) {
+    return;
+  }
+
+  try {
+    const options: AxiosRequestConfig = {
+      method: "GET",
+      responseType: "stream",
+      timeout: 600000,
+      maxContentLength: 1073741824,
+    };
+    const res: AxiosResponse<Readable> = await axios.get(url.href, options);
+    res.data
+      .pipe(file.createWriteStream())
+      .on("error", (err) => {
+        logger.error("stream error");
+        logger.error(err.message);
+      })
+      .on("finish", () => {
+        logger.info("created:", file.cloudStorageURI.href);
+      });
+  } catch (e) {
+    if (axios.isAxiosError(e) && e.response) {
+      logger.error(e.message);
+      logger.error(
+        `Error! HTTP Status: ${e.response.status} ${e.response.statusText}`
+      );
+    } else {
+      logger.error("Unknown error: ", e);
+    }
+  }
+};
 
 // ---------------------------------------------------------------------------
 // https
 // ---------------------------------------------------------------------------
-
-// Take the body json passed to this HTTP endpoint and insert it into
-// Firestore under the path /dqx9mbrpz1jhx/:documentId/urls
-export const dqx9mbrpz1jhx = https.onRequest(
-  { cors: true, timeoutSeconds: 600 },
-  (req: https.Request, res: express.Response) => {
+const dqx9mbrpz1jhxHandler = (
+  req: functions.https.Request,
+  res: express.Response
+) => {
+  corsHandler(req, res, async () => {
     if (req.method === "POST") {
-      const bucket = getStorage().bucket("dqx9mbrpz1jhx");
       const urls = req.body.urls as string[];
       for (const elem of urls) {
         // Iterate files in urls.
         const url = new URL(elem);
-        const filename = url.pathname.substring(1);
-        const file = bucket.file(filename);
-        file.exists().then(([exists]) => {
-          if (!exists) {
-            axios
-              .get(url.href, { responseType: "stream" })
-              .then((res: AxiosResponse<Readable>) => {
-                res.data
-                  .pipe(file.createWriteStream())
-                  .on("error", (err) => {
-                    logger.log(err);
-                  })
-                  .on("finish", () => {
-                    logger.log(file.cloudStorageURI);
-                  });
-              });
-          }
-        });
+        await getDqx9mbrpz1jhx(url);
       }
       res.sendStatus(201);
     } else {
+      logger.warn(req);
       res.sendStatus(405);
     }
-  }
-);
+  });
+};
 
-export const notify = storage.onObjectFinalized(
-  { bucket: "dqx9mbrpz1jhx" },
-  (event) => {
-    logger.log(event.bucket);
-  }
-);
+// ---------------------------------------------------------------------------
+// storage
+// ---------------------------------------------------------------------------
+const notifyHandler = async (object: functions.storage.ObjectMetadata) => {
+  logger.info("link: ", object.mediaLink);
+  logger.info("name: ", object.name);
+};
+
+//
+// export
+//
+export const dqx9mbrpz1jhx = functions
+  .region("asia-northeast1")
+  .runWith({ memory: "256MB", timeoutSeconds: 540 })
+  .https.onRequest(dqx9mbrpz1jhxHandler);
+export const notify = functions
+  .region("asia-northeast1")
+  .runWith({ memory: "256MB", timeoutSeconds: 540 })
+  .storage.bucket("dqx9mbrpz1jhx")
+  .object()
+  .onFinalize(notifyHandler);
