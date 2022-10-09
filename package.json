@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@7.13.2",
   "engines": {
-    "node": ">=18",
+    "node": "16",
     "pnpm": ">=7"
   },
   "scripts": {
@@ -13,9 +13,7 @@
     "start": "next start",
     "clean": "rimraf .next",
     "lint": "next lint",
-    "lint-staged": "lint-staged",
-    "format": "prettier . --write",
-    "prepare": "husky install"
+    "format": "prettier . --write"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -48,8 +46,6 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-tailwindcss": "3.6.2",
     "firebase-tools": "11.14.1",
-    "husky": "8.0.1",
-    "lint-staged": "13.0.3",
     "postcss": "8.4.17",
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
