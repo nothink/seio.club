@@ -17,7 +17,7 @@ specifiers:
   eslint-plugin-react-hooks: 4.6.0
   eslint-plugin-tailwindcss: 3.6.2
   firebase: 9.11.0
-  firebase-tools: 11.14.1
+  firebase-tools: 11.14.2
   next: 12.3.1
   postcss: 8.4.17
   prettier: 2.7.1
@@ -49,7 +49,7 @@ devDependencies:
   eslint-plugin-react: 7.31.10_eslint@8.25.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.25.0
   eslint-plugin-tailwindcss: 3.6.2
-  firebase-tools: 11.14.1
+  firebase-tools: 11.14.2
   postcss: 8.4.17
   prettier: 2.7.1
   rimraf: 3.0.2
@@ -3298,8 +3298,8 @@ packages:
       path-exists: 4.0.0
     dev: true
 
-  /firebase-tools/11.14.1:
-    resolution: {integrity: sha512-y/oAxjULKzkfvgM873SqxB7HGlpF8GhRNCir6uhE+bmxI918tVqtmQP2+Uj+VT15vLz/RoZlseuZYZsW3PtAYw==}
+  /firebase-tools/11.14.2:
+    resolution: {integrity: sha512-ahduDgvR9q3zVMl42k/H2II8Mo4uzgDqp6Wp2wtygpB3diGhmjDCpsIJHYBZoDXOHKgXXXHYpK2W56gUUPPI9w==}
     engines: {node: ^14.18.0 || >=16.4.0}
     hasBin: true
     dependencies:
