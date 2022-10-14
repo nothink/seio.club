@@ -25,13 +25,13 @@
   },
   "dependencies": {
     "daisyui": "2.31.0",
-    "firebase": "9.11.0",
+    "firebase": "9.12.1",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/node": "18.8.4",
+    "@types/node": "18.8.5",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.40.0",
@@ -45,7 +45,7 @@
     "eslint-plugin-react": "7.31.10",
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-tailwindcss": "3.6.2",
-    "firebase-tools": "11.14.2",
+    "firebase-tools": "11.14.3",
     "postcss": "8.4.18",
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
