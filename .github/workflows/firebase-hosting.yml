@@ -30,7 +30,7 @@ jobs:
       - uses: pnpm/action-setup@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "16"
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       # for using firebase-framework-tools
@@ -50,16 +50,13 @@ jobs:
 
       # Deploy productions
       - name: Create SA key
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}' > $HOME/gcloud.json
-      - name: Deploy productions
-        # if: "${{ github.event_name == 'push' }}"
         run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}' > $HOME/gcloud.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
-          pnpm exec firebase deploy --only hosting --debug
 
       # Deploy live channel to:
       #   1.1. push to main
-      - name:  Deploy live channel
+      - name: Deploy live channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         if: "${{ github.event_name == 'push' }}"
         with:
@@ -76,4 +73,3 @@ jobs:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}"
           projectId: "${{ env.PROJECT_ID }}"
-          expires: 12h
