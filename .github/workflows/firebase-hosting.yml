@@ -30,6 +30,7 @@ jobs:
         run: |
           echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}' > $HOME/gcloud.json
           export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
+          echo '${{ secrets.DOT_ENV_LOCAL }}' > $HOME/.env.local
 
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
