@@ -47,11 +47,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ${{ github.workspace }}/.next
+            ${{ github.workspace }}/.next/cache
           # Generate a new cache whenever packages or source files change.
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
       - name: Build Next.js
-        run: pnpm run build
+        run: |
+          pnpm exec firebase login
+          pnpm run build
 
       # --- when push to main branch ---
       # Deploy live channel to:
