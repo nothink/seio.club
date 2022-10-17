@@ -26,11 +26,17 @@ jobs:
     if: "${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     steps:
+      - name: Create SA key
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}' > $HOME/gcloud.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
+          echo '${{ secrets.DOT_ENV_LOCAL }}' > $HOME/.env.local
+
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "16"
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       # for using firebase-framework-tools
@@ -45,21 +51,14 @@ jobs:
           # Generate a new cache whenever packages or source files change.
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
       - name: Build Next.js
-        run: pnpm run build
-      # --- when push to main branch ---
-
-      # Deploy productions
-      - name: Create SA key
-        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}' > $HOME/gcloud.json
-      - name: Deploy productions
-        # if: "${{ github.event_name == 'push' }}"
         run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
-          pnpm exec firebase deploy --only hosting --debug
+          pnpm exec firebase login:ci
+          pnpm run build
 
+      # --- when push to main branch ---
       # Deploy live channel to:
       #   1.1. push to main
-      - name:  Deploy live channel
+      - name: Deploy live channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         if: "${{ github.event_name == 'push' }}"
         with:
@@ -76,4 +75,3 @@ jobs:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SEIOCLUB }}"
           projectId: "${{ env.PROJECT_ID }}"
-          expires: 12h
