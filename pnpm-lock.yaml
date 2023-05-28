@@ -7,7 +7,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': 5.42.0
   '@typescript-eslint/parser': 5.42.0
   autoprefixer: 10.4.12
-  daisyui: 2.31.0
+  daisyui: 2.52.0
   eslint: 8.25.0
   eslint-config-next: 12.3.1
   eslint-config-prettier: 8.5.0
@@ -28,7 +28,7 @@ specifiers:
   typescript: 4.8.4
 
 dependencies:
-  daisyui: 2.31.0_xkowlklhtk6sfvtndbucb3hfiy
+  daisyui: 2.52.0_xkowlklhtk6sfvtndbucb3hfiy
   firebase: 9.12.1
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -2126,8 +2126,8 @@ packages:
     resolution: {integrity: sha512-R4Hv6eGJNzgcKdThZ6XORbSQ873HVcNke74QIq+LbwpT90LaZ8Xzl7KKiuIP16xq/P7ofzRt0h7S0xm+fVScsw==}
     dev: true
 
-  /daisyui/2.31.0_xkowlklhtk6sfvtndbucb3hfiy:
-    resolution: {integrity: sha512-qepRXgQPLNcJ8ZPZy+dUvsC7mRWvMLRcVMe85/wZA60Tnhm/bkidhOzdllL8aAk2JX+W/xlIsTJ8NZFpPm+eyw==}
+  /daisyui/2.52.0_xkowlklhtk6sfvtndbucb3hfiy:
+    resolution: {integrity: sha512-LQTA5/IVXAJHBMFoeaEMfd7/akAFPPcdQPR3O9fzzcFiczneJFM73CFPnScmW2sOgn/D83cvkP854ep2T9OfTg==}
     peerDependencies:
       autoprefixer: ^10.0.2
       postcss: ^8.1.6
